@@ -28,15 +28,32 @@ function TaskColumn({tasks = [], label, color, updateTaskStatus}) {
                     {tasks.length ? tasks.map((task) => (
                         <div 
                             key={task.id} 
-                            className="p-2 mb-1 bg-white border rounded cursor-pointer hover:bg-gray-50 transition-colors"
-                            onDoubleClick={() => {
-                                const nextStatus = task.status === 'pending' ? 'doing' : 
-                                                  task.status === 'doing' ? 'done' : 'pending';
-                                updateTaskStatus(task.id, nextStatus);
-                            }}
-                            title="Double-click to change status"
+                            className="p-2 mb-1 bg-white border rounded hover:bg-gray-50 transition-colors flex justify-between items-center"
+                            title="Click icons to change status"
                         >
-                            {task.title}
+                            <span>{task.title}</span>
+                            <div className="flex items-center">
+                                {task.status !== "pending" && (
+                                    <FaPencilAlt
+                                        onClick={() => updateTaskStatus(task.id, "pending")}
+                                        className="mx-1 hover:cursor-pointer text-yellow-500 hover:text-yellow-600"
+                                    />
+                                )}
+                                
+                                {task.status !== "doing" && (
+                                    <FaHourglass
+                                        onClick={() => updateTaskStatus(task.id, "doing")}
+                                        className="mx-1 hover:cursor-pointer text-blue-500 hover:text-blue-600"
+                                    />
+                                )}
+                                
+                                {task.status !== "done" && (
+                                    <FaCheck
+                                        onClick={() => updateTaskStatus(task.id, "done")}
+                                        className="mx-1 hover:cursor-pointer text-green-500 hover:text-green-600"
+                                    />
+                                )}
+                            </div>
                         </div>
                     )) : <div className="text-gray-500 italic">No tasks</div>}
                 </div>

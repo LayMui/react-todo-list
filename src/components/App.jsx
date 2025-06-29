@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react'
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect, useMemo } from 'react'
 import '../App.css'
 import TaskColumn from './TaskColumn'
 
@@ -42,9 +40,10 @@ function App() {
   };
 
   // Filter tasks by status
-  const pendingTasks = tasks.filter(task => task.status === "pending");
-  const doingTasks = tasks.filter(task => task.status === "doing");
-  const doneTasks = tasks.filter(task => task.status === "done");
+  // overkill but it's to demo on useMemo
+  const pendingTasks = useMemo(() =>  tasks.filter(task => task.status === "pending"));
+  const doingTasks = useMemo(() =>  tasks.filter(task => task.status === "doing"));
+  const doneTasks = useMemo(() => tasks.filter(task => task.status === "done"));
 
   if (loading) {
     return (
