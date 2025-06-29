@@ -30,6 +30,17 @@ function App() {
       });
   }, []);
 
+  // Function to update task status
+  const updateTaskStatus = (taskId, newStatus) => {
+    setTasks(prevTasks => 
+      prevTasks.map(task => 
+        task.id === taskId 
+          ? { ...task, status: newStatus }
+          : task
+      )
+    );
+  };
+
   // Filter tasks by status
   const pendingTasks = tasks.filter(task => task.status === "pending");
   const doingTasks = tasks.filter(task => task.status === "doing");
@@ -61,9 +72,24 @@ function App() {
 
       <div className="bg-white p-3 my-5 border rounded">
         <div className="flex justify-between">
-          <TaskColumn tasks={pendingTasks} label="Pending" color="neutral" />
-          <TaskColumn tasks={doingTasks} label="In Progress" color="slate"/>
-          <TaskColumn tasks={doneTasks} label="Done" color="emerald"/>
+          <TaskColumn 
+            tasks={pendingTasks} 
+            label="Pending" 
+            color="neutral" 
+            updateTaskStatus={updateTaskStatus}
+          />
+          <TaskColumn 
+            tasks={doingTasks} 
+            label="In Progress" 
+            color="slate"
+            updateTaskStatus={updateTaskStatus}
+          />
+          <TaskColumn 
+            tasks={doneTasks} 
+            label="Done" 
+            color="emerald"
+            updateTaskStatus={updateTaskStatus}
+          />
         </div>
       </div>
     </div>
