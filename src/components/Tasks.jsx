@@ -17,6 +17,7 @@ function Tasks({ tasks, setTasks, updateTaskStatus }) {
     [tasks]
   );
 
+
   return (
     <div className="bg-white p-3 my-5 border rounded">
       <div className="flex justify-between">

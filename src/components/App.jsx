@@ -30,17 +30,22 @@ function App() {
       });
   }, []);
 
-  // Function to update task status
   const updateTaskStatus = (taskId, newStatus) => {
-    setTasks(prevTasks => 
-      prevTasks.map(task => 
-        task.id === taskId 
-          ? { ...task, status: newStatus }
-          : task
-      )
-    );
+    if (newStatus === null) {
+      // Delete task if newStatus is null
+      setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+    } else {
+      // Otherwise, update status
+      setTasks(prevTasks => 
+        prevTasks.map(task => 
+          task.id === taskId 
+            ? { ...task, status: newStatus }
+            : task
+        )
+      );
+    }
   };
-
+  
   // Filter tasks by status
   // overkill but it's to demo on useMemo
   const pendingTasks = useMemo(() => tasks.filter(task => task.status === "pending"), [tasks]);

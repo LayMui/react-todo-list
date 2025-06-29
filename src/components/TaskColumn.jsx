@@ -39,6 +39,7 @@ function TaskColumn({tasks = [], label, color, updateTaskStatus}) {
         }
     };
 
+
     return (
         <div className="w-1/3">
             <div className={`bg-${color}-100 m-2 p-3 border rounded`}>
@@ -93,8 +94,8 @@ function TaskColumn({tasks = [], label, color, updateTaskStatus}) {
                                 {task.status === "done" && (
                                     <FaTimesCircle
                                         onClick={(e) => {
-                                            e.stopPropagation();
-                                            // Optional delete function here
+                                           e.stopPropagation();
+                                           updateTaskStatus(task.id, "delete");
                                         }}
                                         className="mx-1 hover:cursor-pointer text-red-500 hover:text-red-600"
                                         title="Task completed"
