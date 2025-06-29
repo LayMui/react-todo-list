@@ -56,51 +56,50 @@ function TaskColumn({tasks = [], label, color, updateTaskStatus}) {
                         >
                             <span>{task.title}</span>
                             <div className="flex items-center">
-                            {label.toLowerCase() !== 'done' && (
-            `  <>
-                    {task.status !== "pending" && (
-                        <FaPencilAlt
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                updateTaskStatus(task.id, "pending");
-                            }}
-                            className="mx-1 hover:cursor-pointer text-yellow-500 hover:text-yellow-600"
-                        />
-                    )}
+                                                            {label.toLowerCase() !== 'done' && (
+                                    <>
+                                        {task.status !== "pending" && (
+                                            <FaPencilAlt
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    updateTaskStatus(task.id, "pending");
+                                                }}
+                                                className="mx-1 hover:cursor-pointer text-yellow-500 hover:text-yellow-600"
+                                            />
+                                        )}
 
-                    {task.status !== "doing" && (
-                        <FaHourglass
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                updateTaskStatus(task.id, "doing");
-                            }}
-                            className="mx-1 hover:cursor-pointer text-blue-500 hover:text-blue-600"
-                        />
-                    )}
+                                        {task.status !== "doing" && (
+                                            <FaHourglass
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    updateTaskStatus(task.id, "doing");
+                                                }}
+                                                className="mx-1 hover:cursor-pointer text-blue-500 hover:text-blue-600"
+                                            />
+                                        )}
 
-                    {task.status !== "done" && (
-                        <FaCheck
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                updateTaskStatus(task.id, "done");
-                            }}
-                            className="mx-1 hover:cursor-pointer text-green-500 hover:text-green-600"
-                        />
-                    )}
-                </>`
-            )}
+                                        {task.status !== "done" && (
+                                            <FaCheck
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    updateTaskStatus(task.id, "done");
+                                                }}
+                                                className="mx-1 hover:cursor-pointer text-green-500 hover:text-green-600"
+                                            />
+                                        )}
+                                    </>
+                                )}
 
-{task.status === "done" && (
-    <FaTimesCircle
-        onClick={(e) => {
-            e.stopPropagation();
-            // Optional delete function here
-        }}
-        className="mx-1 hover:cursor-pointer text-red-500 hover:text-red-600"
-        title="Task completed"
-    />
-)}
-
+                                {task.status === "done" && (
+                                    <FaTimesCircle
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            // Optional delete function here
+                                        }}
+                                        className="mx-1 hover:cursor-pointer text-red-500 hover:text-red-600"
+                                        title="Task completed"
+                                    />
+                                )}
                             </div>
                         </div>
                     )) : <div className="text-gray-500 italic">No tasks</div>}
