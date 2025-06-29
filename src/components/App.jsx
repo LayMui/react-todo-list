@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import '../App.css'
-import TaskColumn from './TaskColumn'
+import Header from './Header'
+import Tasks from './Tasks'
+import NewTaskForm from './NewTaskForm'
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -41,9 +43,9 @@ function App() {
 
   // Filter tasks by status
   // overkill but it's to demo on useMemo
-  const pendingTasks = useMemo(() =>  tasks.filter(task => task.status === "pending"));
-  const doingTasks = useMemo(() =>  tasks.filter(task => task.status === "doing"));
-  const doneTasks = useMemo(() => tasks.filter(task => task.status === "done"));
+  const pendingTasks = useMemo(() => tasks.filter(task => task.status === "pending"), [tasks]);
+  const doingTasks = useMemo(() => tasks.filter(task => task.status === "doing"), [tasks]);
+  const doneTasks = useMemo(() => tasks.filter(task => task.status === "done"), [tasks]);
 
   if (loading) {
     return (
@@ -63,34 +65,16 @@ function App() {
 
   return (
     <div className="container mx-auto">
-      <h1 className="font-bold text-4xl mt-5 mb-3">My Todo List</h1>
-      <p>
-        This is my todo list, may it always be empty except when learning to
-        code.
-      </p>
-
-      <div className="bg-white p-3 my-5 border rounded">
-        <div className="flex justify-between">
-          <TaskColumn 
-            tasks={pendingTasks} 
-            label="Pending" 
-            color="neutral" 
-            updateTaskStatus={updateTaskStatus}
-          />
-          <TaskColumn 
-            tasks={doingTasks} 
-            label="In Progress" 
-            color="slate"
-            updateTaskStatus={updateTaskStatus}
-          />
-          <TaskColumn 
-            tasks={doneTasks} 
-            label="Done" 
-            color="emerald"
-            updateTaskStatus={updateTaskStatus}
-          />
-        </div>
-      </div>
+      <Header/>
+      <NewTaskForm setTasks={setTasks}/>
+      <Tasks 
+        tasks={tasks} 
+        setTasks={setTasks}
+        updateTaskStatus={updateTaskStatus}
+        pendingTasks={pendingTasks}
+        doingTasks={doingTasks}
+        doneTasks={doneTasks}
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { FaCheck, FaHourglass, FaPencilAlt } from 'react-icons/fa';
+import { FaCheck, FaHourglass, FaPencilAlt, FaTimesCircle } from 'react-icons/fa';
 
 function TaskColumn({tasks = [], label, color, updateTaskStatus}) {
     // Function to get the appropriate icon based on label
@@ -17,6 +17,28 @@ function TaskColumn({tasks = [], label, color, updateTaskStatus}) {
         }
     };
 
+    // Function to get the next status in the workflow
+    const getNextStatus = (currentStatus) => {
+        switch(currentStatus) {
+            case 'pending':
+                return 'doing';
+            case 'doing':
+                return 'done';
+            case 'done':
+                return null; // No further progression after done
+            default:
+                return 'pending';
+        }
+    };
+
+    // Handle task item click to move to next status
+    const handleTaskClick = (task) => {
+        const nextStatus = getNextStatus(task.status);
+        if (nextStatus) {
+            updateTaskStatus(task.id, nextStatus);
+        }
+    };
+
     return (
         <div className="w-1/3">
             <div className={`bg-${color}-100 m-2 p-3 border rounded`}>
@@ -28,31 +50,57 @@ function TaskColumn({tasks = [], label, color, updateTaskStatus}) {
                     {tasks.length ? tasks.map((task) => (
                         <div 
                             key={task.id} 
-                            className="p-2 mb-1 bg-white border rounded hover:bg-gray-50 transition-colors flex justify-between items-center"
-                            title="Click icons to change status"
+                            className="p-2 mb-1 bg-white border rounded hover:bg-gray-50 transition-colors flex justify-between items-center cursor-pointer"
+                            title="Click to move to next status"
+                            onClick={() => handleTaskClick(task)}
                         >
                             <span>{task.title}</span>
                             <div className="flex items-center">
-                                {task.status !== "pending" && (
-                                    <FaPencilAlt
-                                        onClick={() => updateTaskStatus(task.id, "pending")}
-                                        className="mx-1 hover:cursor-pointer text-yellow-500 hover:text-yellow-600"
-                                    />
-                                )}
-                                
-                                {task.status !== "doing" && (
-                                    <FaHourglass
-                                        onClick={() => updateTaskStatus(task.id, "doing")}
-                                        className="mx-1 hover:cursor-pointer text-blue-500 hover:text-blue-600"
-                                    />
-                                )}
-                                
-                                {task.status !== "done" && (
-                                    <FaCheck
-                                        onClick={() => updateTaskStatus(task.id, "done")}
-                                        className="mx-1 hover:cursor-pointer text-green-500 hover:text-green-600"
-                                    />
-                                )}
+                            {label.toLowerCase() !== 'done' && (
+            `  <>
+                    {task.status !== "pending" && (
+                        <FaPencilAlt
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                updateTaskStatus(task.id, "pending");
+                            }}
+                            className="mx-1 hover:cursor-pointer text-yellow-500 hover:text-yellow-600"
+                        />
+                    )}
+
+                    {task.status !== "doing" && (
+                        <FaHourglass
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                updateTaskStatus(task.id, "doing");
+                            }}
+                            className="mx-1 hover:cursor-pointer text-blue-500 hover:text-blue-600"
+                        />
+                    )}
+
+                    {task.status !== "done" && (
+                        <FaCheck
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                updateTaskStatus(task.id, "done");
+                            }}
+                            className="mx-1 hover:cursor-pointer text-green-500 hover:text-green-600"
+                        />
+                    )}
+                </>`
+            )}
+
+{task.status === "done" && (
+    <FaTimesCircle
+        onClick={(e) => {
+            e.stopPropagation();
+            // Optional delete function here
+        }}
+        className="mx-1 hover:cursor-pointer text-red-500 hover:text-red-600"
+        title="Task completed"
+    />
+)}
+
                             </div>
                         </div>
                     )) : <div className="text-gray-500 italic">No tasks</div>}
