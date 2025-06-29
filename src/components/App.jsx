@@ -1,22 +1,55 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import '../App.css'
 import TaskColumn from './TaskColumn'
 
 function App() {
-  const tasks = [
-    { id: 1, title: "walk the dog", status: "doing"},
-    { id: 2, title: "drink some soypro", status: "pending"},
-    { id: 3, title: "go to the gym", status: "doing"},
-    { id: 4, title: "wash the dishes", status: "pending"},
-    { id: 5, title: "make bon bon choc", status: "pending"},
-  ]
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    
+    fetch('/tasks.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setTasks(data.tasks);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        console.error('Error fetching tasks:', err);
+        setLoading(false);
+      });
+  }, []);
 
   // Filter tasks by status
   const pendingTasks = tasks.filter(task => task.status === "pending");
   const doingTasks = tasks.filter(task => task.status === "doing");
   const doneTasks = tasks.filter(task => task.status === "done");
+
+  if (loading) {
+    return (
+      <div className="container mx-auto text-center mt-10">
+        <div className="text-xl">Loading tasks...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto text-center mt-10">
+        <div className="text-xl text-red-500">Error loading tasks: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto">

@@ -1,0 +1,9 @@
+{
+    "tasks": [
+      { "id": 1, "title": "walk the dog", "status": "doing"},
+      { "id": 2, "title": "drink some soypro", "status": "pending"},
+      { "id": 3, "title": "go to the gym", "status": "doing"},
+      { "id": 4, "title": "wash the dishes", "status": "pending"},
+      { "id": 5, "title": "make bon bon choc", "status": "pending"}
+    ]
+  }
