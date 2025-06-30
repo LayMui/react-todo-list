@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     setLoading(true);
     
-    fetch('/tasks.json')
+    fetch('../tasks.json')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
